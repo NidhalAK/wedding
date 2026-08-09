@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emma & Liam — Wedding Invitation</title>
+
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Great+Vibes&display=swap');
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: "Cormorant Garamond", serif;
+      color: #3f4035;
+      background:
+        linear-gradient(rgba(248, 244, 234, 0.92), rgba(248, 244, 234, 0.92)),
+        radial-gradient(circle at top, #d9c8a9, #f8f4ea 60%);
+    }
+
+    .invitation {
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    .card {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+      padding: 70px 45px;
+      text-align: center;
+      background: rgba(255, 253, 247, 0.96);
+      border: 1px solid #cbbd9f;
+      box-shadow: 0 20px 60px rgba(60, 50, 30, 0.12);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 12px;
+      border: 1px solid #d8ccb2;
+      pointer-events: none;
+    }
+
+    .top-flower {
+      font-size: 34px;
+      color: #8a9870;
+      margin-bottom: 18px;
+    }
+
+    .small {
+      text-transform: uppercase;
+      letter-spacing: 5px;
+      font-size: 13px;
+      color: #8a8069;
+    }
+
+    h1 {
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(64px, 12vw, 100px);
+      font-weight: 400;
+      color: #7d8063;
+      line-height: 1;
+      margin: 25px 0 8px;
+    }
+
+    .ampersand {
+      font-family: "Cormorant Garamond", serif;
+      font-size: 25px;
+      font-style: italic;
+      color: #aa9671;
+    }
+
+    .names {
+      font-family: "Great Vibes", cursive;
+      font-size: clamp(54px, 10vw, 82px);
+      color: #7d8063;
+      line-height: 1;
+      margin-top: 5px;
+    }
+
+    .intro {
+      max-width: 480px;
+      margin: 35px auto;
+      font-size: 20px;
+      line-height: 1.6;
+    }
+
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin: 30px auto;
+      max-width: 330px;
+      color: #b6a57f;
+    }
+
+    .divider::before,
+    .divider::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: #d4c8ad;
+    }
+
+    .date {
+      font-size: 29px;
+      letter-spacing: 3px;
+      color: #665f4d;
+      margin: 20px 0;
+    }
+
+    .venue {
+      font-size: 19px;
+      line-height: 1.7;
+    }
+
+    .venue strong {
+      display: block;
+      font-size: 25px;
+      font-weight: 500;
+      color: #7d8063;
+    }
+
+    .details {
+      display: flex;
+      justify-content: center;
+      gap: 50px;
+      margin-top: 35px;
+      font-size: 17px;
+    }
+
+    .detail strong {
+      display: block;
+      color: #7d8063;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 12px;
+      margin-bottom: 5px;
+    }
+
+    .rsvp {
+      display: inline-block;
+      margin-top: 40px;
+      padding: 12px 30px;
+      border: 1px solid #9ba083;
+      color: #687050;
+      text-decoration: none;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 12px;
+      transition: all 0.3s ease;
+    }
+
+    .rsvp:hover {
+      background: #7d8063;
+      color: white;
+    }
+
+    .footer {
+      margin-top: 35px;
+      font-style: italic;
+      color: #918873;
+      font-size: 17px;
+    }
+
+    @media (max-width: 600px) {
+      .card {
+        padding: 55px 25px;
+      }
+
+      .details {
+        gap: 25px;
+      }
+
+      .intro {
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <main class="invitation">
+    <section class="card">
+
+      <div class="top-flower">❦</div>
+
+      <div class="small">Together with their families</div>
+
+      <h1>Emma</h1>
+      <div class="ampersand">&</div>
+      <div class="names">Liam</div>
+
+      <p class="intro">
+        joyfully invite you to celebrate their wedding
+        and the beginning of their new journey together.
+      </p>
+
+      <div class="divider">✦</div>
+
+      <div class="date">
+        Saturday · October 17 · 2026
+      </div>
+
+      <div class="venue">
+        <strong>The Garden Estate</strong>
+        123 Rosewood Lane<br>
+        Tuscany, Italy
+      </div>
+
+      <div class="details">
+        <div class="detail">
+          <strong>Ceremony</strong>
+          4:00 PM
+        </div>
+
+        <div class="detail">
+          <strong>Reception</strong>
+          6:00 PM
+        </div>
+      </div>
+
+      <a href="#" class="rsvp" onclick="showRSVP(event)">
+        RSVP
+      </a>
+
+      <div class="footer">
+        We can't wait to celebrate with you.
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    function showRSVP(event) {
+      event.preventDefault();
+      alert("Thank you! RSVP functionality can be connected here.");
+    }
+  </script>
+
+</body>
+</html>
