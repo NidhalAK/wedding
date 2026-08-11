@@ -216,20 +216,39 @@
       border-radius: 210px 210px 12px 12px; pointer-events: none; }
     .hero .eyebrow { text-transform: uppercase; letter-spacing: 0.3em; font-size: 12px; color: var(--ink-soft); }
     body[dir="rtl"] .hero .eyebrow { letter-spacing: 0.06em; }
-    .hero__names { font-family: var(--font-fr-display); font-size: clamp(66px, 16vw, 130px); color: var(--olive); line-height: 1; margin: 6px 0; }
+    .hero .eyebrow { margin-bottom: 18px; }
+    .hero__names { font-family: var(--font-fr-display); font-size: clamp(66px, 16vw, 130px); color: var(--olive); line-height: 1; margin: 0; }
     body[data-lang="ar"] .hero__names { font-family: var(--font-ar-display); }
-    .hero__names .amp { display: block; font-family: var(--font-fr-body); font-style: italic; font-size: 30px; color: var(--rose); margin: 4px 0; }
-    body[data-lang="ar"] .hero__names .amp { font-family: var(--font-ar-body); }
-    .hero__date { font-size: clamp(16px, 3vw, 20px); letter-spacing: 0.14em; color: var(--ink); text-transform: uppercase; }
+    .hero__names .amp { display: block; font-family: var(--font-fr-display); font-size: clamp(38px, 8vw, 64px); color: var(--gold-deep); margin: -4px 0; line-height: 1.1; }
+    body[data-lang="ar"] .hero__names .amp { font-family: var(--font-ar-body); font-size: clamp(28px, 5vw, 42px); }
+    .hero__date { margin-top: 20px; font-size: clamp(16px, 3vw, 20px); letter-spacing: 0.14em; color: var(--ink); text-transform: uppercase; }
     body[dir="rtl"] .hero__date { letter-spacing: 0.02em; }
     .scroll-cue { margin-top: 34px; color: var(--gold-deep); font-size: 26px; animation: bob 1.8s ease-in-out infinite; }
     @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+    /* ============ SCROLL SYSTEM ============ */
+    .scroll-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 70; background: rgba(217,195,157,0.3); }
+    .scroll-progress__bar { height: 100%; background: linear-gradient(90deg, var(--gold), var(--rose)); width: 0%; transition: width 0.12s linear; }
+    .section-dots { position: fixed; right: 14px; top: 50%; transform: translateY(-50%); z-index: 55; display: flex; flex-direction: column; gap: 12px; }
+    @media (max-width: 560px) { .section-dots { right: 8px; } }
+    .section-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--sand); border: 1.5px solid var(--gold); cursor: pointer; transition: all 0.3s ease; padding: 0; }
+    .section-dot.active { background: var(--gold-deep); transform: scale(1.45); }
+    .scroll-hint { position: absolute; bottom: 28px; left: 50%; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; gap: 7px; pointer-events: none; }
+    .scroll-hint span { font-size: 10px; letter-spacing: 0.26em; text-transform: uppercase; color: var(--gold-deep); }
+    .scroll-hint svg { color: var(--gold-deep); animation: scroll-bounce 1.6s ease-in-out infinite; }
+    @keyframes scroll-bounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(7px); } }
+    .sec-next { display: flex; align-items: center; justify-content: center; margin: 40px auto 0; gap: 8px; padding: 10px 26px; border: 1px solid var(--sand); border-radius: 999px; background: transparent; color: var(--gold-deep); font: inherit; font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; cursor: pointer; transition: all 0.3s ease; }
+    .sec-next:hover { background: linear-gradient(135deg, var(--gold), var(--gold-deep)); color: #fff8ec; }
+    body[dir="rtl"] .sec-next { letter-spacing: 0.04em; }
 
     /* ============ PARIS STORY ============ */
     .story { position: relative; }
     .story-video { position: relative; width: 100%; border-radius: 16px; overflow: hidden;
       border: 1px solid var(--sand); box-shadow: 0 18px 46px rgba(70,55,25,0.18); background: #1b140e; line-height: 0; }
-    .story-video__player { display: block; width: 100%; height: auto; max-height: min(70vh, 620px); object-fit: cover; background: #1b140e; }
+    .story-video__player { display: block; width: 100%; height: auto; max-height: min(72vh, 640px); object-fit: contain; background: #1b140e; }
+    .story-video__unmute { position: absolute; top: 14px; right: 14px; display: flex; align-items: center; gap: 7px; padding: 7px 14px; border-radius: 999px; border: none; background: rgba(255,253,247,0.9); color: var(--gold-deep); font: inherit; font-size: 12px; letter-spacing: 0.1em; cursor: pointer; transition: all 0.25s ease; box-shadow: 0 4px 14px rgba(70,55,25,0.18); z-index: 2; }
+    .story-video__unmute:hover { background: var(--gold-deep); color: #fff8ec; }
+    .story-video__unmute.is-on { background: var(--gold-deep); color: #fff8ec; }
     .story-video-cap { text-align: center; margin-top: 14px; font-size: clamp(13px, 2.2vw, 15px); letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-deep); }
     body[dir="rtl"] .story-video-cap { letter-spacing: 0.02em; text-transform: none; font-size: clamp(15px, 2.6vw, 18px); }
     .paris-scene { position: relative; width: 100%; height: clamp(300px, 54vw, 460px);
@@ -420,6 +439,18 @@
 
 <body data-lang="fr" dir="ltr">
 
+  <!-- Scroll progress bar -->
+  <div class="scroll-progress" aria-hidden="true"><div class="scroll-progress__bar" id="scrollBar"></div></div>
+
+  <!-- Section dots navigation -->
+  <nav class="section-dots" aria-label="Navigation">
+    <button class="section-dot active" data-target="sec-hero" title="Accueil"></button>
+    <button class="section-dot" data-target="sec-story" title="Notre histoire"></button>
+    <button class="section-dot" data-target="sec-invite" title="Invitation"></button>
+    <button class="section-dot" data-target="sec-program" title="Programme"></button>
+    <button class="section-dot" data-target="sec-rsvp" title="RSVP"></button>
+  </nav>
+
   <!-- ============ LANGUAGE SWITCH ============ -->
   <div class="lang-switch" role="group" aria-label="Language">
     <button type="button" data-set-lang="fr" class="active">Français</button>
@@ -469,7 +500,7 @@
   <main class="experience">
 
     <!-- ============ HERO ============ -->
-    <header class="hero">
+    <header class="hero" id="sec-hero">
       <div class="hero__frame reveal">
         <img class="hero__photo" src="anime_source_couple.png" alt="Nidhal & Safa" loading="eager">
       </div>
@@ -486,10 +517,18 @@
         <span class="lang-ar">30 ديسمبر 2026 &middot; 1 و 2 جانفي 2027</span>
       </div>
       <div class="scroll-cue reveal">&#8964;</div>
+      <!-- Scroll hint overlay that fades on first scroll -->
+      <div class="scroll-hint" id="scrollHint" aria-hidden="true">
+        <span class="lang-fr">Défiler</span>
+        <span class="lang-ar">للأسفل</span>
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M12 5v14M5 12l7 7 7-7"/>
+        </svg>
+      </div>
     </header>
 
     <!-- ============ PARIS LOVE STORY ============ -->
-    <section class="section story">
+    <section class="section story" id="sec-story">
       <div class="sec-title reveal">
         <div class="kicker">
           <span class="lang-fr">Tout a commencé à Paris</span>
@@ -504,6 +543,7 @@
 
       <div class="story-video reveal">
         <video
+          id="storyVideo"
           class="story-video__player"
           src="video-intro-marriage.mp4"
           autoplay
@@ -511,6 +551,12 @@
           loop
           playsinline
           preload="auto"></video>
+        <button class="story-video__unmute" id="unmuteBtn" type="button" aria-label="Activer le son">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" id="muteIcon"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M23 9l-6 6M17 9l6 6" stroke="currentColor" stroke-width="2"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" id="soundIcon" style="display:none"><path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14" stroke="currentColor" stroke-width="2" fill="none"/></svg>
+          <span class="lang-fr" id="unmuteLbl">Son</span>
+          <span class="lang-ar" style="display:none">الصوت</span>
+        </button>
       </div>
       <div class="story-video-cap reveal">
         <span class="lang-fr">Café de Flore &middot; 6 avril 2025</span>
@@ -526,10 +572,14 @@
         <img src="anime_source_paris.png" alt="Paris - Tour Eiffel" loading="lazy" data-full="anime_source_paris.png">
         <img src="anime_source_couple.png" alt="Couple manga" loading="lazy" data-full="anime_source_couple.png">
       </div>
+      <button class="sec-next reveal" data-target="sec-invite">
+        <span class="lang-fr">&#8964; Invitation</span>
+        <span class="lang-ar">الدعوة &#8964;</span>
+      </button>
     </section>
 
     <!-- ============ INVITATION ============ -->
-    <section class="section">
+    <section class="section" id="sec-invite">
       <div class="invite-card reveal">
         <div class="bismillah only-ar">بسم الله الرحمن الرحيم</div>
         <div class="flourish">&#10086;</div>
@@ -559,10 +609,14 @@
           <span class="lang-ar">نضال<span class="amp">&amp;</span>صفاء</span>
         </div>
       </div>
+      <button class="sec-next reveal" data-target="sec-program">
+        <span class="lang-fr">&#8964; Programme</span>
+        <span class="lang-ar">البرنامج &#8964;</span>
+      </button>
     </section>
 
     <!-- ============ PROGRAM ============ -->
-    <section class="section">
+    <section class="section" id="sec-program">
       <div class="sec-title reveal">
         <div class="kicker"><span class="lang-fr">Le déroulement</span><span class="lang-ar">البرنامج</span></div>
         <h2><span class="lang-fr">Programme des festivités</span><span class="lang-ar">برنامج الحفل</span></h2>
@@ -705,7 +759,7 @@
     </section>
 
     <!-- ============ FINAL / RSVP ============ -->
-    <section class="section final">
+    <section class="section final" id="sec-rsvp">
       <div class="flourish reveal">&#10022;</div>
       <p class="footer-note reveal">
         <span class="lang-fr">Votre présence sera le plus beau des cadeaux <span class="heart-mini">&#10084;</span></span>
@@ -751,6 +805,60 @@
       langButtons.forEach(function (b) { b.classList.toggle('active', b.getAttribute('data-set-lang') === lang); });
     }
     langButtons.forEach(function (b) { b.addEventListener('click', function () { setLang(b.getAttribute('data-set-lang')); }); });
+
+    // ---------- Scroll progress + section dots + scroll hint ----------
+    var scrollBar = document.getElementById('scrollBar');
+    var scrollHint = document.getElementById('scrollHint');
+    var dots = document.querySelectorAll('.section-dot');
+    var sections = Array.from(document.querySelectorAll('[id^="sec-"]'));
+    var hintHidden = false;
+
+    function updateScroll() {
+      var scrollTop = window.scrollY;
+      var docH = document.documentElement.scrollHeight - window.innerHeight;
+      if (scrollBar) scrollBar.style.width = (docH > 0 ? (scrollTop / docH * 100) : 0) + '%';
+      if (scrollHint && !hintHidden && scrollTop > 40) { scrollHint.style.opacity = '0'; hintHidden = true; }
+      var mid = scrollTop + window.innerHeight / 2;
+      var active = 0;
+      sections.forEach(function (s, i) { if (s.offsetTop <= mid) active = i; });
+      dots.forEach(function (d, i) { d.classList.toggle('active', i === active); });
+    }
+    window.addEventListener('scroll', updateScroll, { passive: true });
+
+    function scrollToSection(id) {
+      var el = document.getElementById(id);
+      if (el) el.scrollIntoView({ behavior: 'smooth' });
+    }
+    dots.forEach(function (d) {
+      d.addEventListener('click', function () { scrollToSection(d.getAttribute('data-target')); });
+    });
+    document.querySelectorAll('.sec-next').forEach(function (btn) {
+      btn.addEventListener('click', function () { scrollToSection(btn.getAttribute('data-target')); });
+    });
+
+    // Auto-nudge: slight scroll down then back to hint scroll
+    setTimeout(function () {
+      if (window.scrollY === 0) {
+        window.scrollTo({ top: 60, behavior: 'smooth' });
+        setTimeout(function () { if (window.scrollY <= 65) window.scrollTo({ top: 0, behavior: 'smooth' }); }, 900);
+      }
+    }, 1200);
+
+    // ---------- Video unmute toggle ----------
+    (function () {
+      var vid = document.getElementById('storyVideo');
+      var btn = document.getElementById('unmuteBtn');
+      var muteIco = document.getElementById('muteIcon');
+      var soundIco = document.getElementById('soundIcon');
+      if (!vid || !btn) return;
+      btn.addEventListener('click', function () {
+        vid.muted = !vid.muted;
+        muteIco.style.display = vid.muted ? '' : 'none';
+        soundIco.style.display = vid.muted ? 'none' : '';
+        btn.classList.toggle('is-on', !vid.muted);
+        if (!vid.muted && vid.paused) vid.play();
+      });
+    })();
 
     // ---------- Intro pigeons ----------
     var intro = document.getElementById('intro');
