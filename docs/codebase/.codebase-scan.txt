@@ -1,0 +1,76 @@
+
+=== DIRECTORY TREE (max depth 3, source files only) ===
+.DS_Store
+.gitignore
+anime_source_couple.png
+anime_source_paris.png
+docs
+docs/codebase
+docs/codebase/.codebase-scan.txt
+images
+images/.DS_Store
+index.html
+video-intro-marriage.mp4
+
+=== STACK DETECTION (manifest files) ===
+No recognized manifest files found in project root.
+
+=== ENTRY POINTS ===
+No common entry points found. Check 'main' or 'scripts.start' in manifest files above.
+
+=== LINTING AND FORMATTING CONFIG ===
+No linting or formatting config files found in project root.
+
+=== ENVIRONMENT VARIABLE TEMPLATES ===
+No .env.example or .env.template found. Identify required environment variables by searching the code and config for environment variable reads.
+
+=== TODO / FIXME / HACK (production code only, test dirs excluded) ===
+None found.
+
+=== GIT RECENT COMMITS (last 20) ===
+cfc40a2 Second-version: scroll system, viewpager dots, hero spacing, video fix & unmute, section next buttons
+ee9e2d5 First version: bilingual invitation with intro pigeons, video story, program & maps
+d76d977 Première version
+0f4edf3 Update index.html
+1096193 Create index.html
+
+=== HIGH-CHURN FILES (last 90 days, top 20) ===
+   5 index.html
+   2 images/web/image_copy.jpg
+   2 images/web/image_copy_2.jpg
+   2 images/web/image_copy_3.jpg
+   1 .gitignore
+   1 anime_source_couple.png
+   1 anime_source_paris.png
+   1 video-intro-marriage.mp4
+
+=== MONOREPO SIGNALS ===
+No monorepo signals detected.
+
+=== CODE METRICS ===
+Total files scanned: 5
+Total lines of code: 0
+
+Files by language:
+  Other: 5
+
+Top 10 largest files:
+anime_source_paris.png: 2411.2KB
+video-intro-marriage.mp4: 2372.7KB
+anime_source_couple.png: 2160.4KB
+index.html: 58.4KB
+docs/codebase/.codebase-scan.txt: 0.0KB
+
+=== CI/CD PIPELINES ===
+No CI/CD pipelines detected.
+
+=== CONTAINERS & ORCHESTRATION ===
+No containerization configs detected.
+
+=== SECURITY & COMPLIANCE ===
+No security configs detected.
+
+=== PERFORMANCE & TESTING ===
+No performance testing configs detected.
+
+=== SCAN COMPLETE ===
