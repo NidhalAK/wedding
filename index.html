@@ -924,13 +924,23 @@
       var muteIco = document.getElementById('muteIcon');
       var soundIco = document.getElementById('soundIcon');
       if (!vid || !btn) return;
-      btn.addEventListener('click', function () {
-        vid.muted = !vid.muted;
-        muteIco.style.display = vid.muted ? '' : 'none';
-        soundIco.style.display = vid.muted ? 'none' : '';
-        btn.classList.toggle('is-on', !vid.muted);
-        if (!vid.muted && vid.paused) vid.play();
-      });
+      function setMuted(muted) {
+        vid.muted = muted;
+        muteIco.style.display = muted ? '' : 'none';
+        soundIco.style.display = muted ? 'none' : '';
+        btn.classList.toggle('is-on', !muted);
+        if (!muted && vid.paused) { var p = vid.play(); if (p && p.catch) p.catch(function () {}); }
+      }
+      btn.addEventListener('click', function () { setMuted(!vid.muted); });
+
+      // Auto-play sound when the video enters view; mute again when it leaves.
+      // Best-effort: browsers may keep it muted until a user gesture (the intro "Entrer" click usually unlocks it).
+      if ('IntersectionObserver' in window) {
+        var io = new IntersectionObserver(function (entries) {
+          entries.forEach(function (e) { setMuted(!e.isIntersecting); });
+        }, { threshold: 0.6 });
+        io.observe(vid);
+      }
     })();
 
     // ---------- Intro pigeons ----------
