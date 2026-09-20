@@ -576,9 +576,7 @@
           class="story-video__player"
           src="video-intro-marriage.mp4"
           poster="images/opt/couple.jpg"
-          autoplay
           muted
-          loop
           playsinline
           preload="metadata"></video>
         <button class="story-video__unmute" id="unmuteBtn" type="button" aria-label="Activer le son">
@@ -917,27 +915,40 @@
       }
     }, 1200);
 
-    // ---------- Video unmute toggle ----------
+    // ---------- Story video: auto-start once, with sound, when it enters view ----------
     (function () {
       var vid = document.getElementById('storyVideo');
       var btn = document.getElementById('unmuteBtn');
       var muteIco = document.getElementById('muteIcon');
       var soundIco = document.getElementById('soundIcon');
       if (!vid || !btn) return;
-      function setMuted(muted) {
-        vid.muted = muted;
-        muteIco.style.display = muted ? '' : 'none';
-        soundIco.style.display = muted ? 'none' : '';
-        btn.classList.toggle('is-on', !muted);
-        if (!muted && vid.paused) { var p = vid.play(); if (p && p.catch) p.catch(function () {}); }
+      var ended = false;
+      vid.addEventListener('ended', function () { ended = true; });
+      function syncBtn() {
+        muteIco.style.display = vid.muted ? '' : 'none';
+        soundIco.style.display = vid.muted ? 'none' : '';
+        btn.classList.toggle('is-on', !vid.muted);
       }
-      btn.addEventListener('click', function () { setMuted(!vid.muted); });
-
-      // Auto-play sound when the video enters view; mute again when it leaves.
-      // Best-effort: browsers may keep it muted until a user gesture (the intro "Entrer" click usually unlocks it).
+      function tryPlay() {
+        var p = vid.play();
+        if (p && p.catch) p.catch(function () { vid.muted = true; vid.play().catch(function () {}); syncBtn(); });
+      }
+      btn.addEventListener('click', function () {
+        vid.muted = !vid.muted;
+        if (!vid.muted && vid.paused && !ended) tryPlay();
+        syncBtn();
+      });
+      // Start playing once (with sound) when scrolled into view; pause + mute when out of view.
       if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (entries) {
-          entries.forEach(function (e) { setMuted(!e.isIntersecting); });
+          entries.forEach(function (e) {
+            if (e.isIntersecting) {
+              if (!ended) { vid.muted = false; if (vid.paused) tryPlay(); }
+            } else {
+              vid.pause(); vid.muted = true;
+            }
+            syncBtn();
+          });
         }, { threshold: 0.6 });
         io.observe(vid);
       }
