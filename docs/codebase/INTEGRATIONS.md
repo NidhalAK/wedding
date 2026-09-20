@@ -8,7 +8,7 @@
 |--------|---------------------------|---------|------------|-------------|----------|
 | Google Fonts | CDN / static asset | Web typography (FR + AR fonts) | None (public CDN) | med (visual) | [index.html#L10](../../index.html#L10) |
 | Google Maps (search URL) | External deep link | Directions to 3 wedding venues | None | low | [index.html#L666](../../index.html#L666) |
-| WhatsApp / RSVP form | Not integrated (placeholder) | Collect RSVP responses | [ASK USER] | high (intended) | [index.html#L932](../../index.html#L932) |
+| WhatsApp (RSVP) | External deep link (`wa.me`) | Guests confirm attendance via chat to `33658117207` | None | high | [index.html](../../index.html) |
 | Background music (`music.mp3`) | Local audio asset | Ambient music | None | low | [index.html#L786](../../index.html#L786) |
 
 ### 2) Data Stores

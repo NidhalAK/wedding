@@ -958,14 +958,24 @@
       }
     })();
 
-    // ---------- RSVP (placeholder) ----------
-    document.getElementById('rsvpBtn').addEventListener('click', function (e) {
-      e.preventDefault();
-      var fr = body.getAttribute('data-lang') === 'fr';
-      alert(fr
-        ? "Merci ! Indiquez-moi un numéro WhatsApp ou un lien de formulaire pour activer ce bouton."
-        : "شكراً لكم! أعطونا رقم واتساب أو رابط نموذج لتفعيل هذا الزر.");
-    });
+    // ---------- RSVP via WhatsApp ----------
+    (function () {
+      var rsvpBtn = document.getElementById('rsvpBtn');
+      if (!rsvpBtn) return;
+      var WHATSAPP_NUMBER = '33658117207'; // 0033 6 58 11 72 07 in international format
+      function rsvpLink() {
+        var fr = body.getAttribute('data-lang') === 'fr';
+        var msg = fr
+          ? 'Bonjour Nidhal & Safa, je confirme ma présence à votre mariage. \u2764\uFE0F'
+          : 'مرحبا نضال و صفاء، أؤكد حضوري لحفل زفافكم. \u2764\uFE0F';
+        return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
+      }
+      rsvpBtn.setAttribute('target', '_blank');
+      rsvpBtn.setAttribute('rel', 'noopener');
+      rsvpBtn.setAttribute('href', rsvpLink());
+      // Rebuild with the current language right before navigating.
+      rsvpBtn.addEventListener('click', function () { rsvpBtn.setAttribute('href', rsvpLink()); });
+    })();
 
     // ---------- Music toggle ----------
     (function () {

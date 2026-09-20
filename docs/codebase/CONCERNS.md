@@ -6,7 +6,7 @@
 
 | Severity | Concern | Evidence | Impact | Suggested action |
 |----------|---------|----------|--------|------------------|
-| high | RSVP button is a non-functional placeholder (shows `alert()`) | [index.html#L932](../../index.html#L932) | Guests cannot actually RSVP | Wire to a real WhatsApp link or form endpoint |
+| high | RSVP (resolved) | [index.html](../../index.html) | Now opens WhatsApp to `33658117207` with a pre-filled bilingual message | Wired on branch `review-after-skills` |
 | med | Music toggle is a placeholder; `music.mp3` source is commented out | [index.html#L786](../../index.html#L786), [index.html#L945](../../index.html#L945) | Music button shows an alert instead of playing | Add `music.mp3` and uncomment `<source>` |
 | med | Monolithic 971-line single file mixing HTML/CSS/JS | [index.html](../../index.html) | Hard to maintain; highest-churn file | Consider splitting CSS/JS if project grows |
 | low | Referenced `images/web/*.jpg` (in git history) not present in working tree | scan.txt "HIGH-CHURN FILES" vs `find images` (only `.DS_Store`) | Potential broken references if used | Confirm which images are needed |
@@ -42,7 +42,7 @@
 
 ### 6) `[ASK USER]` Questions
 
-1. [ASK USER] What should the RSVP button do — link to a WhatsApp number, or POST to a form/endpoint? Provide the value to wire it up. ([index.html#L932](../../index.html#L932))
+1. [ASK USER] ~~What should the RSVP button do~~ — resolved: opens WhatsApp chat to `33658117207` with a pre-filled confirmation message.
 2. [ASK USER] Do you want background music? If so, provide `music.mp3` (and confirm autoplay expectations). ([index.html#L786](../../index.html#L786))
 3. [ASK USER] Where will this be deployed (GitHub Pages, Netlify, other)? This affects asset paths and any build step.
 4. [ASK USER] Are the `images/web/*.jpg` files from git history still needed, or fully replaced by the `anime_source_*.png` assets?
