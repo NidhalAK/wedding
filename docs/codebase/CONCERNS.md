@@ -32,7 +32,7 @@
 | Concern | Evidence | Current symptom | Scaling risk | Suggested improvement |
 |---------|----------|-----------------|--------------|-----------------------|
 | Large unoptimized assets | scan.txt largest files: PNGs ~2.1–2.4MB, MP4 ~2.4MB | Slow first load on mobile | Bandwidth cost | Compress images, use responsive/`webp`, poster for video |
-| Video `preload="auto"` | [index.html#L553](../../index.html#L553) | Downloads video before user reaches it | Wasted bandwidth | Use `preload="metadata"` |
+| Video `preload` (resolved) | [index.html](../../index.html) | Was `preload="auto"`; now `preload="metadata"` | — | Fixed on branch `review-after-skills` |
 
 ### 5) Fragile/High-Churn Areas
 
