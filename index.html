@@ -480,7 +480,6 @@
     .rsvp-input { width: 100%; padding: 12px 18px; border: 1px solid var(--sand); border-radius: 999px; background: rgba(255,255,255,0.75); font: inherit; font-size: 16px; color: var(--ink); text-align: center; outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
     .rsvp-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,155,98,0.18); }
     .rsvp-input.invalid { border-color: #c0553f; box-shadow: 0 0 0 3px rgba(192,85,63,0.15); }
-    .rsvp-input--guests { margin-top: 10px; }
     .rsvp-error { color: #b0472f; font-size: 14px; margin-top: 8px; }
     .rsvp-submit { margin-top: 16px; width: 100%; justify-content: center; }
     .rsvp-success { color: var(--olive); font-size: clamp(16px, 2.8vw, 19px); line-height: 1.6; }
@@ -880,7 +879,6 @@
         </p>
         <form id="rsvpForm" novalidate>
           <input type="text" id="rsvpName" name="name" class="rsvp-input" autocomplete="name" maxlength="80" required>
-          <input type="number" id="rsvpGuests" name="guests" class="rsvp-input rsvp-input--guests" min="1" max="30" inputmode="numeric">
           <div class="rsvp-error" id="rsvpError" role="alert" hidden>
             <span class="lang-fr">Veuillez saisir votre nom et prénom.</span>
             <span class="lang-ar">يرجى إدخال الاسم واللقب.</span>
@@ -892,8 +890,8 @@
         </form>
       </div>
       <div class="rsvp-success" id="rsvpSuccess" hidden>
-        <span class="lang-fr">Merci ! Votre présence est confirmée <span class="heart-mini">&#10084;</span></span>
-        <span class="lang-ar">شكراً لكم! تم تأكيد حضوركم <span class="heart-mini">&#10084;</span></span>
+        <span class="lang-fr">Merci ! Votre présence sera notre plus beau cadeau <span class="heart-mini">&#10084;</span></span>
+        <span class="lang-ar">شكراً لكم! حضوركم سيكون أجمل هدية لنا <span class="heart-mini">&#10084;</span></span>
       </div>
     </div>
   </div>
@@ -1099,7 +1097,6 @@
       var closeBtn = document.getElementById('rsvpClose');
       var form = document.getElementById('rsvpForm');
       var nameInput = document.getElementById('rsvpName');
-      var guestsInput = document.getElementById('rsvpGuests');
       var errBox = document.getElementById('rsvpError');
       var formWrap = document.getElementById('rsvpFormWrap');
       var successBox = document.getElementById('rsvpSuccess');
@@ -1114,7 +1111,6 @@
       function openModal(e) {
         if (e) e.preventDefault();
         nameInput.placeholder = isAr() ? 'الاسم واللقب' : 'Nom & prénom';
-        guestsInput.placeholder = isAr() ? 'عدد المدعوين (اختياري)' : "Nombre d'invités (optionnel)";
         errBox.hidden = true; nameInput.classList.remove('invalid');
         formWrap.hidden = false; successBox.hidden = true;
         modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
@@ -1137,26 +1133,23 @@
           return;
         }
         var ar = isAr();
-        var guests = guestsInput.value.trim();
         if (RSVP_ENDPOINT) {
-          // Collecte automatique : enregistre le nom + nombre d'invités (Google Sheet / Formspree).
+          // Collecte automatique : enregistre le nom (Google Sheet / Formspree).
           var data = new FormData();
           data.append('name', name);
-          data.append('guests', guests || '1');
           data.append('lang', ar ? 'ar' : 'fr');
           data.append('date', new Date().toISOString());
           fetch(RSVP_ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' }).catch(function () {});
           formWrap.hidden = true; successBox.hidden = false;
         } else {
           // Par défaut : ouvre WhatsApp avec le nom pré-rempli (l'hôte reçoit la confirmation).
-          var suffix = guests ? (ar ? (' (' + guests + ' أشخاص)') : (' (' + guests + ' personnes)')) : '';
           var msg = ar
-            ? ('مرحبا نضال وصفاء، أنا ' + name + ' أؤكد حضوري لحفل زفافكم' + suffix + '. \u2764\uFE0F')
-            : ('Bonjour Nidhal & Safa, ' + name + ' confirme sa présence à votre mariage' + suffix + '. \u2764\uFE0F');
+            ? ('مرحبا نضال وصفاء، أنا ' + name + ' أؤكد حضوري لحفل زفافكم. \u2764\uFE0F')
+            : ('Bonjour Nidhal & Safa, ' + name + ' confirme sa présence à votre mariage. \u2764\uFE0F');
           window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
           closeModal();
         }
-        nameInput.value = ''; guestsInput.value = '';
+        nameInput.value = '';
       });
     })();
 
