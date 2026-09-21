@@ -1006,7 +1006,7 @@
         tryPlay();
         syncBtn();
       });
-      // Start playing once (with sound) when scrolled into view; pause + mute when out of view.
+      // Start playing once (with sound) as soon as the video enters view; pause + mute when out of view.
       if ('IntersectionObserver' in window) {
         var io = new IntersectionObserver(function (entries) {
           entries.forEach(function (e) {
@@ -1017,7 +1017,7 @@
             }
             syncBtn();
           });
-        }, { threshold: 0.6 });
+        }, { threshold: 0.25 });
         io.observe(vid);
       }
     })();
