@@ -467,6 +467,23 @@
       .ev-henna { opacity: 1; }
       .reveal { opacity: 1; transform: none; }
     }
+
+    /* ============ RSVP MODAL ============ */
+    .rsvp-modal { position: fixed; inset: 0; z-index: 130; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(40, 32, 18, 0.7); backdrop-filter: blur(3px); }
+    .rsvp-modal.open { display: flex; }
+    .rsvp-card { position: relative; width: min(92vw, 430px); background: var(--card); border: 1px solid var(--sand); border-radius: 16px; padding: clamp(26px, 5vw, 40px) clamp(20px, 5vw, 36px); box-shadow: 0 30px 80px rgba(40, 30, 10, 0.45); text-align: center; }
+    .rsvp-card::before { content: ""; position: absolute; inset: 10px; border: 1px solid rgba(184,155,98,0.4); border-radius: 10px; pointer-events: none; }
+    .rsvp-close { position: absolute; top: 10px; inset-inline-end: 14px; background: none; border: none; font-size: 26px; line-height: 1; color: var(--ink-soft); cursor: pointer; }
+    .rsvp-title { font-family: var(--font-fr-display); font-weight: 400; font-size: clamp(30px, 7vw, 44px); color: var(--olive); line-height: 1.1; }
+    body[data-lang="ar"] .rsvp-title { font-family: var(--font-ar-display); }
+    .rsvp-sub { margin: 6px 0 18px; color: var(--ink-soft); font-size: clamp(15px, 2.6vw, 17px); }
+    .rsvp-input { width: 100%; padding: 12px 18px; border: 1px solid var(--sand); border-radius: 999px; background: rgba(255,255,255,0.75); font: inherit; font-size: 16px; color: var(--ink); text-align: center; outline: none; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    .rsvp-input:focus { border-color: var(--gold); box-shadow: 0 0 0 3px rgba(184,155,98,0.18); }
+    .rsvp-input.invalid { border-color: #c0553f; box-shadow: 0 0 0 3px rgba(192,85,63,0.15); }
+    .rsvp-error { color: #b0472f; font-size: 14px; margin-top: 8px; }
+    .rsvp-submit { margin-top: 16px; width: 100%; justify-content: center; }
+    .rsvp-success { color: var(--olive); font-size: clamp(16px, 2.8vw, 19px); line-height: 1.6; }
+    .rsvp-success .heart-mini { color: var(--rose); }
   </style>
 </head>
 
@@ -847,6 +864,38 @@
     <img id="lightboxImg" src="" alt="">
   </div>
 
+  <!-- RSVP confirmation modal -->
+  <div class="rsvp-modal" id="rsvpModal" aria-hidden="true">
+    <div class="rsvp-card" role="dialog" aria-modal="true" aria-labelledby="rsvpTitle">
+      <button class="rsvp-close" id="rsvpClose" type="button" aria-label="Fermer">&times;</button>
+      <div id="rsvpFormWrap">
+        <h3 class="rsvp-title" id="rsvpTitle">
+          <span class="lang-fr">Confirmer ma présence</span>
+          <span class="lang-ar">تأكيد الحضور</span>
+        </h3>
+        <p class="rsvp-sub">
+          <span class="lang-fr">Indiquez votre nom et prénom pour confirmer.</span>
+          <span class="lang-ar">أدخلوا الاسم واللقب لتأكيد الحضور.</span>
+        </p>
+        <form id="rsvpForm" novalidate>
+          <input type="text" id="rsvpName" name="name" class="rsvp-input" autocomplete="name" maxlength="80" required>
+          <div class="rsvp-error" id="rsvpError" role="alert" hidden>
+            <span class="lang-fr">Veuillez saisir votre nom et prénom.</span>
+            <span class="lang-ar">يرجى إدخال الاسم واللقب.</span>
+          </div>
+          <button type="submit" class="btn btn--solid rsvp-submit">
+            <span class="lang-fr">Confirmer</span>
+            <span class="lang-ar">تأكيد</span>
+          </button>
+        </form>
+      </div>
+      <div class="rsvp-success" id="rsvpSuccess" hidden>
+        <span class="lang-fr">Merci ! Votre présence est confirmée <span class="heart-mini">&#10084;</span></span>
+        <span class="lang-ar">شكراً لكم! تم تأكيد حضوركم <span class="heart-mini">&#10084;</span></span>
+      </div>
+    </div>
+  </div>
+
   <!-- Music (optional): place a music.mp3 next to this file and uncomment the source -->
   <audio id="wedding-music" loop preload="none">
     <!-- <source src="music.mp3" type="audio/mpeg"> -->
@@ -1041,23 +1090,67 @@
       }
     })();
 
-    // ---------- RSVP via WhatsApp ----------
+    // ---------- RSVP: modal + validation + collection ----------
     (function () {
       var rsvpBtn = document.getElementById('rsvpBtn');
-      if (!rsvpBtn) return;
-      var WHATSAPP_NUMBER = '33658117207'; // 0033 6 58 11 72 07 in international format
-      function rsvpLink() {
-        var fr = body.getAttribute('data-lang') === 'fr';
-        var msg = fr
-          ? 'Bonjour Nidhal & Safa, je confirme ma présence à votre mariage. \u2764\uFE0F'
-          : 'مرحبا نضال و صفاء، أؤكد حضوري لحفل زفافكم. \u2764\uFE0F';
-        return 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg);
+      var modal = document.getElementById('rsvpModal');
+      var closeBtn = document.getElementById('rsvpClose');
+      var form = document.getElementById('rsvpForm');
+      var nameInput = document.getElementById('rsvpName');
+      var errBox = document.getElementById('rsvpError');
+      var formWrap = document.getElementById('rsvpFormWrap');
+      var successBox = document.getElementById('rsvpSuccess');
+      if (!rsvpBtn || !modal || !form) return;
+
+      var WHATSAPP_NUMBER = '33658117207'; // 0033 6 58 11 72 07
+      // Optionnel : collez ici l'URL d'un Google Apps Script (ou Formspree) pour enregistrer
+      // automatiquement les confirmations dans un Google Sheet. Laissé vide => envoi WhatsApp.
+      var RSVP_ENDPOINT = '';
+
+      function isAr() { return body.getAttribute('data-lang') === 'ar'; }
+      function openModal(e) {
+        if (e) e.preventDefault();
+        nameInput.placeholder = isAr() ? 'الاسم واللقب' : 'Nom & prénom';
+        errBox.hidden = true; nameInput.classList.remove('invalid');
+        formWrap.hidden = false; successBox.hidden = true;
+        modal.classList.add('open'); modal.setAttribute('aria-hidden', 'false');
+        setTimeout(function () { nameInput.focus(); }, 60);
       }
-      rsvpBtn.setAttribute('target', '_blank');
-      rsvpBtn.setAttribute('rel', 'noopener');
-      rsvpBtn.setAttribute('href', rsvpLink());
-      // Rebuild with the current language right before navigating.
-      rsvpBtn.addEventListener('click', function () { rsvpBtn.setAttribute('href', rsvpLink()); });
+      function closeModal() { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
+
+      rsvpBtn.addEventListener('click', openModal);
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+      document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && modal.classList.contains('open')) closeModal(); });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        var name = nameInput.value.trim();
+        if (!name) {
+          errBox.hidden = false;
+          nameInput.classList.add('invalid');
+          nameInput.focus();
+          return;
+        }
+        var ar = isAr();
+        if (RSVP_ENDPOINT) {
+          // Collecte automatique : enregistre le nom (Google Sheet / Formspree).
+          var data = new FormData();
+          data.append('name', name);
+          data.append('lang', ar ? 'ar' : 'fr');
+          data.append('date', new Date().toISOString());
+          fetch(RSVP_ENDPOINT, { method: 'POST', body: data, mode: 'no-cors' }).catch(function () {});
+          formWrap.hidden = true; successBox.hidden = false;
+        } else {
+          // Par défaut : ouvre WhatsApp avec le nom pré-rempli (l'hôte reçoit la confirmation).
+          var msg = ar
+            ? ('مرحبا نضال وصفاء، أنا ' + name + ' أؤكد حضوري لحفل زفافكم. \u2764\uFE0F')
+            : ('Bonjour Nidhal & Safa, ' + name + ' confirme sa présence à votre mariage. \u2764\uFE0F');
+          window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg), '_blank', 'noopener');
+          closeModal();
+        }
+        nameInput.value = '';
+      });
     })();
 
     // ---------- Music toggle ----------
