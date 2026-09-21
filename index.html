@@ -1020,6 +1020,13 @@
         }, { threshold: 0.25 });
         io.observe(vid);
       }
+      // "Entrer" (intro) est un vrai geste utilisateur : on l'utilise pour débloquer la lecture avec son.
+      var introSkipEl = document.getElementById('introSkip');
+      if (introSkipEl) introSkipEl.addEventListener('click', function () {
+        vid.muted = true;
+        var p = vid.play();
+        if (p && p.then) p.then(function () { vid.pause(); try { vid.currentTime = 0; } catch (e) {} }).catch(function () {});
+      });
     })();
 
     // ---------- Intro pigeons ----------
@@ -1033,7 +1040,6 @@
       if (music && music.querySelector('source')) { music.play().catch(function () {}); }
     }
     introSkip.addEventListener('click', closeIntro);
-    setTimeout(closeIntro, 5600);
 
     // ---------- Scroll reveal ----------
     function startReveals() {
