@@ -198,10 +198,18 @@
     .intro__names .amp { font-size: 0.55em; color: var(--rose); margin: 0 0.25em; font-style: italic; }
     @keyframes fade-up { from { opacity: 0; transform: translate(-50%, 18px); } to { opacity: 1; transform: translate(-50%, 0); } }
 
-    .intro__skip { position: absolute; bottom: 22px; left: 50%; transform: translateX(-50%);
-      font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-soft);
-      background: none; border: none; cursor: pointer; opacity: 0.7; animation: pulse-soft 2s ease-in-out infinite; }
-    @keyframes pulse-soft { 0%,100% { opacity: 0.45; } 50% { opacity: 0.85; } }
+    .intro__skip { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%);
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 15px; letter-spacing: 0.18em; text-transform: uppercase; font-weight: 600;
+      color: #fff8ec; cursor: pointer; border: none; padding: 13px 36px; border-radius: 999px;
+      background: linear-gradient(135deg, var(--gold), var(--gold-deep));
+      box-shadow: 0 10px 26px rgba(156,127,71,0.45); animation: enter-pulse 1.8s ease-in-out infinite; }
+    .intro__skip:hover { filter: brightness(1.07); }
+    body[dir="rtl"] .intro__skip { letter-spacing: 0.06em; }
+    @keyframes enter-pulse {
+      0%,100% { transform: translateX(-50%) scale(1); box-shadow: 0 10px 26px rgba(156,127,71,0.4); }
+      50% { transform: translateX(-50%) scale(1.06); box-shadow: 0 14px 36px rgba(156,127,71,0.62); }
+    }
 
     /* Floating petals */
     .petal { position: fixed; top: -8vh; z-index: 1; pointer-events: none; color: var(--rose); opacity: 0; animation: petal-fall linear infinite; }
@@ -463,7 +471,7 @@
       .story-avatar--her, .story-avatar--him, .meet-heart, .scroll-cue,
       .paris-cloud, .paris-birds, .eiffel__light, .cafe__glow,
       .ev-sign, .ev-pen, .ev-spark, .ev-spark2, .ev-hand, .ev-henna, .ev-moon, .ev-rings, .ev-conf,
-      .ico-cal__dot, .ico-clock__min, .ico-clock__hour, .ico-pin { animation: none !important; }
+      .ico-cal__dot, .ico-clock__min, .ico-clock__hour, .ico-pin, .intro__skip { animation: none !important; }
       .ev-henna { opacity: 1; }
       .reveal { opacity: 1; transform: none; }
     }
